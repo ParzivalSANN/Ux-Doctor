@@ -1,0 +1,71 @@
+:root {
+  /* Pastel Dark / Soft Chunky Renk Paleti */
+  --bg-deep: #1e1730;
+  --bg-base: #261d3d;
+  --bg-card: #2f244c;
+  --bg-surface: #392c5c;
+  --bg-hover: #45356e;
+
+  /* Vurgu Renkleri */
+  --color-mint: #7ee7c7;
+  --color-mint-text: #15382b;
+  
+  --color-yellow: #fed668;
+  --color-yellow-text: #423200;
+
+  --color-coral: #ff9f76;
+  --color-coral-text: #4a2313;
+
+  --color-pink: #ff85a1;
+  --color-pink-text: #4a1523;
+
+  --color-red: #ff6b6b;
+  --color-red-text: #471414;
+
+  --color-lavender: #b8a5e3;
+  --color-muted: #8a7ea8;
+
+  /* Chunky Köşe ve Gölgeler */
+  --radius-card: 20px;
+  --radius-button: 16px;
+  --radius-pill: 9999px;
+  
+  --shadow-chunky: 0 8px 0 rgba(0, 0, 0, 0.25);
+  --shadow-card: 0 10px 25px -5px rgba(10, 5, 20, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+/* Özel Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--bg-surface);
+  border-radius: 9999px;
+  border: 2px solid var(--bg-deep);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-lavender);
+}
+
+/* Chunky Buton Efekti */
+.btn-chunky {
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.btn-chunky:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Selection */
+::selection {
+  background-color: var(--color-coral);
+  color: #ffffff;
+}

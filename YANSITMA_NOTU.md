@@ -25,6 +25,7 @@ Bu yanıltmayı, ilk prototipte paneldeki "Sayfada Göster (Highlight)" butonuna
 
 1. **Halüsinasyon Kalkanı (Grounding Verifier):** LLM'in ürettiği her bir CSS seçiciyi, arayüze basılmadan önce canlı DOM üzerinde `document.querySelector(selector)` ile test eden bir doğrulama katmanı (`src/ai/verifier.ts`) yazdım. Sayfada fiziksel olarak karşılığı olmayan hiçbir seçici sisteme kabul edilmedi.
 2. **Alibaba PageAgent Tarzı Ön Budama:** Sayfayı LLM'e göndermeden önce `display: none`, `opacity: 0` veya `rect.width <= 0` olan görünmez tüm çöpleri ayıkladım; modele yalnızca sayfada gerçekten nefes alan somut düğümleri verdim.
-3. **Deterministik + Yorumsal Hibrit Yapı:** Matematiksel olarak ölçülebilen kontrolleri (kontrast, buton boyutu, alt metin) asla LLM'in insafına bırakmadım; bunları doğrudan JavaScript ile ölçen %100 deterministik bir motor inşa ettim.
+3. **Bölünmüş Ekran (Split Screen) ve Hedef DOM Ayrımı:** Yan panel mimarisinde test edilirken sistemin eklentinin kendi arayüzünü değil, sol tarafta açık olan asıl web sayfasını (`#target-web-page`) hedeflemesi gerektiği ayrımını netleştirdik. `postMessage` ve `targetRoot` köprüsüyle sayfa üzerindeki gerçek öğelerin taranması ve canlı parıldayan neon çerçeveyle odaklanması garanti altına alındı.
+4. **Deterministik + Yorumsal Hibrit Yapı:** Matematiksel olarak ölçülebilen kontrolleri (kontrast, buton boyutu, alt metin) asla LLM'in insafına bırakmadım; bunları doğrudan JavaScript ile ölçen %100 deterministik bir motor inşa ettim.
 
 **Sonuç:** AI güçlü bir yaratıcı akıl yürütücüdür; ancak bir tanı aracında güvenilirlik, AI'ın her iddiasını kod seviyesinde sorgulayan ve kanıt arayan katı bir doğrulayıcı mimariyle mümkündür.

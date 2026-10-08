@@ -247,7 +247,7 @@ npm run build
 ---
 
 ### 📄 Ek Teslim Dosyaları
-- **Otomatik Oluşturulmuş Demo Videosu:** [`demo/ux_doctor_demo_video.webm`](demo/ux_doctor_demo_video.webm) *(1280x720 HD çözünürlükte, tüm akışı, canlı vurgulamayı, skorlama katmanlarını ve JSON dışa aktarımını içeren 4.92 MB video)*
+- **Otomatik Oluşturulmuş Demo Videosu:** [`demo/ux_doctor_demo_video.webm`](demo/ux_doctor_demo_video.webm) *(1280x720 HD çözünürlükte, sol tarafta değerlendirilen hedef web sitesi [MHRS] ve sağ tarafta UX Doctor Side Panel bölünmüş ekranında canlı sayfa vurgulamasını [Highlight], çift katmanlı skorları, formül modalını ve JSON dışa aktarımını içeren video)*
 - **Demo Videosu Yeniden Üretim Komutu:** `npm run record:demo` *(Playwright-core motoruyla testsiz, doğrudan senaryoyu video olarak kaydeder)*
 - **Yansıtma Notu:** [`YANSITMA_NOTU.md`](YANSITMA_NOTU.md) *(AI'ın nerede yardım ettiği, nerede yanılttığı ve bunun nasıl fark edildiği)*
 - **Demo Video Kılavuzu & Konuşma Metni:** [`DEMO_REHBERI.md`](DEMO_REHBERI.md) *(3-5 dakikalık video sunumu için sahne sahne ekran kaydı ve konuşma rehberi)*

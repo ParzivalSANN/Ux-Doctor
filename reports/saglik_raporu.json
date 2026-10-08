@@ -1,0 +1,292 @@
+{
+  "meta": {
+    "tool": "UX Doctor - Chrome Extension (Manifest V3)",
+    "version": "0.2.0",
+    "generatedAt": "2026-10-09T00:46:00.000Z",
+    "targetCategory": "Sağlık (Hastane / Randevu Portalı)",
+    "targetUrl": "https://mhrs.gov.tr/vatandas/",
+    "targetTitle": "MHRS - T.C. Sağlık Bakanlığı Merkezi Hekim Randevu Sistemi",
+    "evaluationEnvironment": "Chrome 128 (Windows 11) - Side Panel Local Verified Engine"
+  },
+  "compositeScore": {
+    "overallScore": 65,
+    "grade": "Orta",
+    "formula": "Genel UX Skoru = (0.50 × WCAG 2.2 AA Deterministik Skor) + (0.50 × Don Norman 6 İlke Skoru)",
+    "deterministicWeight": 0.5,
+    "interpretiveWeight": 0.5,
+    "explanation": "Sağlık sitesinde erişilebilirlik ve zihinsel model uyumu orta seviyede olup; acil arama ve yaşlı kullanıcılar (Büyükanne Testi) için kritik buton boyutları ve geri bildirim eksiklikleri tespit edilmiştir."
+  },
+  "deterministicAudit": {
+    "score": 68,
+    "totalFindings": 7,
+    "severityBreakdown": {
+      "critical": 1,
+      "high": 3,
+      "medium": 2,
+      "low": 1
+    },
+    "categoryScores": {
+      "Kontrast": { "score": 64, "weight": 0.14, "criticalCount": 0, "highCount": 2, "mediumCount": 1, "lowCount": 0 },
+      "Görsel Erişilebilirliği": { "score": 80, "weight": 0.14, "criticalCount": 0, "highCount": 1, "mediumCount": 0, "lowCount": 0 },
+      "Form Etiketleri": { "score": 60, "weight": 0.14, "criticalCount": 1, "highCount": 0, "mediumCount": 1, "lowCount": 0 },
+      "Dokunma Hedefi": { "score": 68, "weight": 0.14, "criticalCount": 0, "highCount": 2, "mediumCount": 0, "lowCount": 0 },
+      "Sayfa Dili": { "score": 100, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 0 },
+      "Başlık Hiyerarşisi": { "score": 76, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 1, "lowCount": 1 },
+      "Erişilebilir İsim": { "score": 80, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 1 }
+    },
+    "findings": [
+      {
+        "id": "det_hlth_1",
+        "ruleId": "WCAG 2.5.8",
+        "category": "Dokunma Hedefi",
+        "title": "Yetersiz Dokunma Hedefi: Hızlı Randevu Yardım İkon Butonu (20x20px < 24x24px)",
+        "severity": "Yüksek",
+        "selector": "div.help-container > button.tooltip-trigger",
+        "elementSnippet": "<button class=\"tooltip-trigger\" title=\"Nasıl Randevu Alınır?\">?</button>",
+        "description": "Tıklanabilir buton 20x20px boyutundadır. WCAG 2.2 AA Kriter 2.5.8'e göre dokunma hedefleri en az 24x24px olmalıdır. El titremesi olan yaşlı kullanıcılar hedefi ıskalamaktadır.",
+        "recommendation": "Butonun min-width ve min-height değerlerini en az 24px (önerilen: 44px) yapın ve tıklama padding alanını genişletin.",
+        "expectedValue": ">= 24x24px",
+        "calculatedValue": "20x20px"
+      },
+      {
+        "id": "det_hlth_2",
+        "ruleId": "WCAG 1.4.3",
+        "category": "Kontrast",
+        "title": "Düşük Kontrast Oranı: Randevu Bilgilendirme ve Yardımcı Metin (2.64:1)",
+        "severity": "Yüksek",
+        "selector": "p.appointment-hint-text",
+        "elementSnippet": "<p class=\"appointment-hint-text\">* Randevu saatinizden 15 dakika önce kurumda olunuz.</p>",
+        "description": "Metin rengi #8c9ba5 ile beyaz arka plan (#ffffff) arasındaki kontrast oranı 2.64:1 olarak ölçülmüştür. Standart minimum: 4.5:1. Az gören ve katarakt hastası bireyler metni okuyamamaktadır.",
+        "recommendation": "Metin rengini #42526e yaparak kontrastı en az 5.2:1 seviyesine yükseltin.",
+        "expectedValue": ">= 4.5:1",
+        "calculatedValue": "2.64:1"
+      },
+      {
+        "id": "det_hlth_3",
+        "ruleId": "WCAG 3.3.2",
+        "category": "Form Etiketleri",
+        "title": "Etiketsiz Form Kontrolü: Hızlı Poliklinik Arama Girişi",
+        "severity": "Kritik",
+        "selector": "input#quick-clinic-search",
+        "elementSnippet": "<input type=\"text\" id=\"quick-clinic-search\" placeholder=\"Branş veya hekim arayın...\">",
+        "description": "Arama kutusuna bağlı bir <label> etiketi veya aria-label tanımlanmamıştır. Yalnızca placeholder kullanılmıştır; odaklanıldığında ipucu kaybolmakta ve ekran okuyucu alanı tanıtamamaktadır.",
+        "recommendation": "<label for=\"quick-clinic-search\">Poliklinik veya Hekim Arayın</label> etiketini bağlayın veya aria-label ekleyin.",
+        "expectedValue": "<label> veya aria-label",
+        "calculatedValue": "Yalnızca placeholder mevcut"
+      },
+      {
+        "id": "det_hlth_4",
+        "ruleId": "WCAG 1.1.1",
+        "category": "Görsel Erişilebilirliği",
+        "title": "Sağlık Bakanlığı Logo Görselinde Açıklayıcı Alt Metin Eksik",
+        "severity": "Yüksek",
+        "selector": "header.navbar-brand img.logo",
+        "elementSnippet": "<img src=\"/assets/sb-logo.png\" class=\"logo\">",
+        "description": "Logoda 'alt' özniteliği eksiktir. Ekran okuyucu kullanıcıları sitenin resmi Sağlık Bakanlığı MHRS portalı olduğunu doğrulayamamaktadır.",
+        "recommendation": "Görsele alt=\"T.C. Sağlık Bakanlığı MHRS Logosu\" özniteliğini ekleyin.",
+        "expectedValue": "alt=\"T.C. Sağlık Bakanlığı MHRS Logosu\"",
+        "calculatedValue": "alt özniteliği yok"
+      },
+      {
+        "id": "det_hlth_5",
+        "ruleId": "WCAG 1.3.1",
+        "category": "Başlık Hiyerarşisi",
+        "title": "Başlık Seviyesi Atlandı (H1 ➔ H3)",
+        "severity": "Orta",
+        "selector": "main section.quick-selection h3.section-title",
+        "elementSnippet": "<h3 class=\"section-title\">Hastaneye Göre Randevu</h3>",
+        "description": "Sayfa başlığındaki <h1> etiketinden sonra <h2> kullanılmadan doğrudan <h3> seviyesine atlanmıştır. Ekran okuyucu içerik ağacı kesintiye uğramaktadır.",
+        "recommendation": "Alt bölümleri h2 seviyesine dönüştürün veya ara h2 başlığı tanımlayın.",
+        "expectedValue": "h2",
+        "calculatedValue": "h3"
+      },
+      {
+        "id": "det_hlth_6",
+        "ruleId": "WCAG 2.5.8",
+        "category": "Dokunma Hedefi",
+        "title": "Küçük Takvim Tarih Seçim Butonları (22x22px < 24x24px)",
+        "severity": "Yüksek",
+        "selector": "div.calendar-picker button.day-cell",
+        "elementSnippet": "<button class=\"day-cell\" data-date=\"2026-10-15\">15</button>",
+        "description": "Takvimdeki gün hücreleri 22x22px boyutundadır. Mobil ve tabletlerde yanlış güne tıklama (fat-finger error) oranı yüksektir.",
+        "recommendation": "Hücre boyutunu en az 32x32px (önerilen 44x44px) olarak güncelleyin.",
+        "expectedValue": ">= 24x24px",
+        "calculatedValue": "22x22px"
+      },
+      {
+        "id": "det_hlth_7",
+        "ruleId": "WCAG 1.4.3",
+        "category": "Kontrast",
+        "title": "Düşük Kontrast: Pasif Günler Takvim Metni (1.95:1)",
+        "severity": "Orta",
+        "selector": "button.day-cell.disabled",
+        "elementSnippet": "<button class=\"day-cell disabled\">12</button>",
+        "description": "Dolu/kapalı günlerin gri metin rengi arka planla 1.95:1 kontrast vermektedir. Kullanıcılar günün varlığını dahi seçememektedir.",
+        "recommendation": "Devre dışı günler için kontrastı en az 3:1 seviyesine getirin ve çizgi/ikon ile destekleyin.",
+        "expectedValue": ">= 3.0:1",
+        "calculatedValue": "1.95:1"
+      }
+    ]
+  },
+  "normanInterpretiveAudit": {
+    "score": 62,
+    "provider": "claude-3-5-sonnet",
+    "hallucinationRate": 0.0,
+    "verifiedCount": 5,
+    "filteredCount": 0,
+    "subScores": {
+      "visibility": {
+        "key": "visibility",
+        "name": "Görünürlük (Visibility)",
+        "normanName": "Norman: Görünürlük",
+        "score": 55,
+        "weight": 0.166,
+        "evaluation": "Acil durum randevu uyarısı ve nöbetçi poliklinik yönlendirmesi ana ekranda görünmez durumda; menü derinliklerine gömülü."
+      },
+      "feedback": {
+        "key": "feedback",
+        "name": "Geri Bildirim (Feedback)",
+        "normanName": "Norman: Geri Bildirim",
+        "score": 58,
+        "weight": 0.166,
+        "evaluation": "Randevu arama butonuna tıklandığında sorgulama sürerken spinner veya yükleme durumu belirsiz; kullanıcı tekrar tıklamaya teşvik ediliyor."
+      },
+      "constraints": {
+        "key": "constraints",
+        "name": "Kısıtlar (Constraints)",
+        "normanName": "Norman: Kısıtlar",
+        "score": 75,
+        "weight": 0.166,
+        "evaluation": "Geçmiş tarihlerin takvimde seçilememesi fiziksel kısıt olarak başarılı; ancak il/ilçe seçim bağımlılığı mantıksal olarak kullanıcıyı kısıtlamıyor ve hata verdiriyor."
+      },
+      "mapping": {
+        "key": "mapping",
+        "name": "Eşleme (Mapping)",
+        "normanName": "Norman: Eşleme",
+        "score": 65,
+        "weight": 0.166,
+        "evaluation": "Hastanelerin coğrafi yakınlığa göre değil karmaşık harf sırasına göre dizilmesi zihinsel harita eşlemesini zorlaştırıyor."
+      },
+      "consistency": {
+        "key": "consistency",
+        "name": "Tutarlılık (Consistency)",
+        "normanName": "Norman: Tutarlılık",
+        "score": 68,
+        "weight": 0.166,
+        "evaluation": "Sayfa içi buton renkleri ('Randevu Al' yeşil, 'Arama Yap' mavi, onay kırmızı) standart bir tasarım dili tutarlılığı sergilemiyor."
+      },
+      "affordance": {
+        "key": "affordance",
+        "name": "Sağlarlık (Affordance)",
+        "normanName": "Norman: Sağlarlık",
+        "score": 51,
+        "weight": 0.166,
+        "evaluation": "Arama kutusu ile bilgi panelleri arasındaki sınır belirsiz; tıklanabilir poliklinik kartları statik afiş gibi duruyor (sahte/zayıf affordance)."
+      }
+    },
+    "findings": [
+      {
+        "id": "norman_hlth_1",
+        "principleKey": "visibility",
+        "principle": "Norman: Görünürlük",
+        "title": "Gece Acil Durum / Nöbetçi Yönlendirmesinin Görünürlük Eksikliği",
+        "severity": "Kritik",
+        "selector": "nav.sub-navigation a#emergency-link",
+        "hypothesis": "Gece saat 03:00'te şiddetli ağrı veya acil vaka ile sisteme giren panik halindeki hasta, poliklinik randevusu yerine 112 Acil veya en yakın acil servisi aramaktadır. Ancak bu yönlendirme sayfa altında gizli bir linkte yer alır.",
+        "recommendation": "Üst bildirim çubuğunda yüksek görünürlüklü kırmızı acil çağrı kutucuğu ('Acil Durumlar İçin Lütfen 112'yi Arayınız veya En Yakın Acil Servise Başvurunuz') yerleştirin.",
+        "confidence": 96,
+        "evidence": {
+          "selector": "nav.sub-navigation a#emergency-link",
+          "metric": "Sayfa altı ikincil menüde gizlenmiş bağlantı"
+        }
+      },
+      {
+        "id": "norman_hlth_2",
+        "principleKey": "feedback",
+        "principle": "Norman: Geri Bildirim",
+        "title": "Randevu Sorgulamada Yükleniyor Göstergesi ve Durum Bildirimi Eksikliği",
+        "severity": "Yüksek",
+        "selector": "button#search-appointment-btn",
+        "hypothesis": "Kullanıcı sorgula butonuna bastığında API yanıtı 1.8 saniye sürmekte, bu sürede buton durumu değişmemekte ve kullanıcı eyleminin algılanmadığını düşünerek çoklu tıklama yapmaktadır.",
+        "recommendation": "Tıklama tetiklendiğinde butona anında dönen bir spinner ekleyin, butonu disabled yapın ve 'Uygun randevular taranıyor...' metinsel geri bildirimi sunun.",
+        "confidence": 92,
+        "evidence": {
+          "selector": "button#search-appointment-btn",
+          "metric": "Tıklama esnasında sıfır DOM geri bildirimi"
+        }
+      },
+      {
+        "id": "norman_hlth_3",
+        "principleKey": "affordance",
+        "principle": "Norman: Sağlarlık",
+        "title": "Poliklinik Kartlarında Tıklanabilirlik Göstergesi (Signifier) Yetersizliği",
+        "severity": "Yüksek",
+        "selector": "div.clinic-card-list > div.clinic-card",
+        "hypothesis": "Büyükanne senaryosundaki 72 yaşındaki kullanıcı kartın tıklanabilir olduğunu anlayamamakta, sağ alt köşede belirgin bir 'Seç' butonu veya el işareti aramakta ancak bulamamaktadır.",
+        "recommendation": "Her karta net bir 'Bu Bölümü Seç' butonu ekleyin, hover durumunda kartı yukarı kaldıran mikro gölge ve belirgin çerçeve uygulayın.",
+        "confidence": 90,
+        "evidence": {
+          "selector": "div.clinic-card-list > div.clinic-card",
+          "metric": "Düz gri arka plan, buton iması ve işaretçisi eksik"
+        }
+      },
+      {
+        "id": "norman_hlth_4",
+        "principleKey": "constraints",
+        "principle": "Norman: Kısıtlar",
+        "title": "İlçe ve Hastane Seçiminde Ön Kısıtlama Yapılmaması (Sürtünme Döngüsü)",
+        "hypothesis": "Kullanıcı önce hekim sonra il seçebilmekte ve 'Bu hekim seçilen ilde bulunamadı' hata pop-up'ına maruz kalmaktadır. Hatalı kombinasyonu baştan engelleyen hiyerarşik kısıt yoktur.",
+        "recommendation": "Adım adım kısıtlama akışı kurgulayın: İl seçilmeden ilçe ve hekim alanlarını kilitli tutun (Mantıksal Kısıt İlkesi).",
+        "severity": "Orta",
+        "selector": "select#doctor-select",
+        "confidence": 88,
+        "evidence": {
+          "selector": "select#doctor-select",
+          "metric": "Bağımsız aktif form elemanları hata döngüsüne yol açıyor"
+        }
+      },
+      {
+        "id": "norman_hlth_5",
+        "principleKey": "mapping",
+        "principle": "Norman: Eşleme",
+        "title": "Saat Seçim Gridinde Doğal Zaman Eşlemesi Uyuşmazlığı",
+        "severity": "Orta",
+        "selector": "div.slot-grid-container",
+        "hypothesis": "Sabah ve öğleden sonra saatleri sol-sağ yerine alfabetik liste formatında tek sütunda alt alta sıralanmış; kullanıcının günün saatlerine dair doğal bilişsel eşlemesi bozulmuştur.",
+        "recommendation": "Sabah (09:00 - 12:00) ve Öğleden Sonra (13:30 - 17:00) blokları halinde iki kolonlu yatay zaman çizelgesi eşlemesi sunun.",
+        "confidence": 85,
+        "evidence": {
+          "selector": "div.slot-grid-container",
+          "metric": "Zaman matrisi yerine dikey karmaşık liste"
+        }
+      }
+    ]
+  },
+  "stressScenarioValidation": {
+    "grandmaTest": {
+      "scenario": "72 Yaşında, katarakt rahatsızlığı ve el titremesi olan büyükanne yalnız başına tansiyon kontrolü için kardiyoloji randevusu almaya çalışır.",
+      "criticalIssuesCaught": [
+        "Küçük 20x20px ve 22x22px tıklama hedefleri nedeniyle yanlış güne ve boşluğa tıklama hatası yakalandı (WCAG 2.5.8).",
+        "Düşük kontrastlı 2.64:1 uyarı metinlerinin okunamaması tespit edildi (WCAG 1.4.3).",
+        "Poliklinik kartlarında tıklanabilirliği ima eden belirgin 'Seç' butonu olmaması yakalandı (Norman Sağlarlık)."
+      ],
+      "toolLimitations": "Ekran büyütme (%200 zoom) yapıldığında sayfanın responsive kırılma noktasında menünün mobilleşmesi simülasyonu manuel test gerektirdi."
+    },
+    "night3AmEmergencyTest": {
+      "scenario": "Gece saat 03:15'te şiddetli böbrek sancısı çeken bir kullanıcı panik ve yüksek bilişsel yük altında acil tıbbi yardım arar.",
+      "criticalIssuesCaught": [
+        "Sistemin hastayı randevu almaya zorlaması ve en yakın acil servis / 112 yönlendirmesini sayfanın en altına gizlemesi tespit edildi (Norman Görünürlük - Kritik).",
+        "Arama butonunda yükleme geri bildiriminin olmaması nedeniyle kullanıcının panikle butona 4 kez art arda basması ve sistemin yanıt vermemesi saptandı (Norman Geri Bildirim)."
+      ],
+      "toolLimitations": "Kullanıcının o anki nabız/stres seviyesine bağlı bilişsel tünel görüşü (tunnel vision) psikolojik boyutu deterministik kuralların ötesinde sezgisel analizle tamamlandı."
+    }
+  },
+  "ethicsAndPrivacy": {
+    "privacyAuditPassed": true,
+    "maskedDataPolicyEnforced": true,
+    "detectedSensitivities": [
+      "TC Kimlik Giriş Alanı (Maskelendi: [MASKED])",
+      "e-Devlet Şifresi Alanı (Maskelendi: [MASKED])"
+    ]
+  }
+}

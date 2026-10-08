@@ -1,0 +1,257 @@
+{
+  "meta": {
+    "tool": "UX Doctor - Chrome Extension (Manifest V3)",
+    "version": "0.2.0",
+    "generatedAt": "2026-10-09T00:47:00.000Z",
+    "targetCategory": "Türk E-Ticaret Sitesi",
+    "targetUrl": "https://www.hepsiburada.com/ara?q=tansiyon+aleti",
+    "targetTitle": "Tansiyon Aleti Modelleri, Fiyatları ve Yorumları - Hepsiburada",
+    "evaluationEnvironment": "Chrome 128 (Windows 11) - Side Panel Local Verified Engine"
+  },
+  "compositeScore": {
+    "overallScore": 76,
+    "grade": "İyi",
+    "formula": "Genel UX Skoru = (0.50 × WCAG 2.2 AA Deterministik Skor) + (0.50 × Don Norman 6 İlke Skoru)",
+    "deterministicWeight": 0.5,
+    "interpretiveWeight": 0.5,
+    "explanation": "Sayfa zengin e-ticaret etkileşimlerine sahip olmakla birlikte; filtreleme alanlarındaki küçük dokunma boyutları ve indirim metinlerindeki düşük kontrast seviyeleri erişilebilirliği kısıtlamaktadır."
+  },
+  "deterministicAudit": {
+    "score": 74,
+    "totalFindings": 6,
+    "severityBreakdown": {
+      "critical": 1,
+      "high": 2,
+      "medium": 2,
+      "low": 1
+    },
+    "categoryScores": {
+      "Kontrast": { "score": 70, "weight": 0.14, "criticalCount": 0, "highCount": 1, "mediumCount": 1, "lowCount": 0 },
+      "Görsel Erişilebilirliği": { "score": 88, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 1, "lowCount": 0 },
+      "Form Etiketleri": { "score": 72, "weight": 0.14, "criticalCount": 0, "highCount": 1, "mediumCount": 0, "lowCount": 0 },
+      "Dokunma Hedefi": { "score": 68, "weight": 0.14, "criticalCount": 0, "highCount": 2, "mediumCount": 0, "lowCount": 0 },
+      "Sayfa Dili": { "score": 100, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 0 },
+      "Başlık Hiyerarşisi": { "score": 90, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 1 },
+      "Erişilebilir İsim": { "score": 60, "weight": 0.14, "criticalCount": 1, "highCount": 0, "mediumCount": 0, "lowCount": 0 }
+    },
+    "findings": [
+      {
+        "id": "det_ecom_1",
+        "ruleId": "WCAG 4.1.2",
+        "category": "Erişilebilir İsim",
+        "title": "İsimsiz Hızlı Sepete Ekle Butonu (Yalnızca İkon)",
+        "severity": "Kritik",
+        "selector": "li.productListContent-item:nth-of-type(1) button.add-to-cart-icon",
+        "elementSnippet": "<button class=\"add-to-cart-icon\"><svg ...></svg></button>",
+        "description": "Ürün kartının üzerindeki sepet ikon butonunda ne metin ne de aria-label bulunmaktadır. Ekran okuyucu kullanıcıları butonun amacını bilmeden 'Düğme' ifadesini duymaktadır.",
+        "recommendation": "Butona aria-label=\"Omron M2 Tansiyon Aletini Sepete Ekle\" özniteliğini ekleyin.",
+        "expectedValue": "aria-label=\"[Ürün Adı] Sepete Ekle\"",
+        "calculatedValue": "Boş / İsimsiz"
+      },
+      {
+        "id": "det_ecom_2",
+        "ruleId": "WCAG 2.5.8",
+        "category": "Dokunma Hedefi",
+        "title": "Filtre Temizleme / Kapatma Çarpı Butonu (18x18px < 24x24px)",
+        "severity": "Yüksek",
+        "selector": "div.applied-filters-tag button.remove-tag",
+        "elementSnippet": "<button class=\"remove-tag\">×</button>",
+        "description": "Seçili filtreleri kaldıran çarpı butonu 18x18px boyutundadır. WCAG 2.2 AA Kriter 2.5.8 gereksinimi olan minimum 24x24px sınırının altındadır.",
+        "recommendation": "Tıklanabilir etiketi çevreleyen butonun padding değerini artırarak dokunma alanını en az 24x24px yapın.",
+        "expectedValue": ">= 24x24px",
+        "calculatedValue": "18x18px"
+      },
+      {
+        "id": "det_ecom_3",
+        "ruleId": "WCAG 1.4.3",
+        "category": "Kontrast",
+        "title": "Düşük Kontrast: İndirim Oranı Rozet Metni (2.81:1)",
+        "severity": "Yüksek",
+        "selector": "span.discount-badge-percent",
+        "elementSnippet": "<span class=\"discount-badge-percent\">%25 İndirim</span>",
+        "description": "Turuncu açık zemin üzerindeki beyaz metin rengi 2.81:1 kontrast vermektedir. Standart gereksinimi: minimum 4.5:1. Parlak güneş altında veya düşük parlaklıkta okunması zordur.",
+        "recommendation": "Turuncu tonunu koyulaştırın (#d9531e) veya metin rengini siyah/koyu kahve yapın.",
+        "expectedValue": ">= 4.5:1",
+        "calculatedValue": "2.81:1"
+      },
+      {
+        "id": "det_ecom_4",
+        "ruleId": "WCAG 3.3.2",
+        "category": "Form Etiketleri",
+        "title": "Marka Filtreleme Checkbox Kontrollerinde Eksik Label Bağlantısı",
+        "severity": "Yüksek",
+        "selector": "div.filter-group-brand input[type=\"checkbox\"]:nth-of-type(1)",
+        "elementSnippet": "<input type=\"checkbox\" id=\"brand_omron\"><span class=\"lbl\">Omron (42)</span>",
+        "description": "Checkbox elemanı ile yanındaki marka metni arasında <label for=\"brand_omron\"> bağı kurulmamıştır. Tıklama alanı yalnızca küçük kutucukla sınırlı kalmaktadır.",
+        "recommendation": "Metni <label for=\"brand_omron\"> içine alın veya input'u label ile sarmalayın.",
+        "expectedValue": "<label for=\"brand_omron\">",
+        "calculatedValue": "Bağlantısız span etiketi"
+      },
+      {
+        "id": "det_ecom_5",
+        "ruleId": "WCAG 2.5.8",
+        "category": "Dokunma Hedefi",
+        "title": "Sayfalama (Pagination) Numara Butonları Boyutu (22x26px)",
+        "severity": "Yüksek",
+        "selector": "ul.page-numbers li a",
+        "elementSnippet": "<a href=\"?sayfa=2\" class=\"page-link\">2</a>",
+        "description": "Sayfalama linklerinin genişliği 22px olarak ölçülmüştür. Parmakla dokunulduğunda bir sonraki sayfaya geçerken yanlış numaraya tıklama sürtünmesi yaşanır.",
+        "recommendation": "Sayfa numaraları butonlarının minimum boyutunu 36x36px yapın.",
+        "expectedValue": ">= 24x24px",
+        "calculatedValue": "22x26px"
+      },
+      {
+        "id": "det_ecom_6",
+        "ruleId": "WCAG 1.4.3",
+        "category": "Kontrast",
+        "title": "Düşük Kontrast: Ücretsiz Kargo İkincil Bilgi Metni (3.12:1)",
+        "severity": "Orta",
+        "selector": "span.shipping-free-label",
+        "elementSnippet": "<span class=\"shipping-free-label\">Yarın Kargoda</span>",
+        "description": "Açık yeşil zemin üzerindeki beyaz kargo metni 3.12:1 kontrast vermektedir.",
+        "recommendation": "Metin rengini koyu yeşil (#155724) yaparak kontrastı 6:1 üzerine çıkarın.",
+        "expectedValue": ">= 4.5:1",
+        "calculatedValue": "3.12:1"
+      }
+    ]
+  },
+  "normanInterpretiveAudit": {
+    "score": 78,
+    "provider": "claude-3-5-sonnet",
+    "hallucinationRate": 0.0,
+    "verifiedCount": 5,
+    "filteredCount": 0,
+    "subScores": {
+      "visibility": {
+        "key": "visibility",
+        "name": "Görünürlük (Visibility)",
+        "normanName": "Norman: Görünürlük",
+        "score": 82,
+        "weight": 0.166,
+        "evaluation": "Fiyat ve sepet butonları net şekilde görünür; ancak kargo teslim süresi ikincil alanda zayıf kalıyor."
+      },
+      "feedback": {
+        "key": "feedback",
+        "name": "Geri Bildirim (Feedback)",
+        "normanName": "Norman: Geri Bildirim",
+        "score": 72,
+        "weight": 0.166,
+        "evaluation": "Sepete ekleme yapıldığında sayfanın sağ üstünde minik bir animasyon oluşuyor ancak kullanıcının odaklandığı ürün kartında anlık onay mesajı yetersiz."
+      },
+      "constraints": {
+        "key": "constraints",
+        "name": "Kısıtlar (Constraints)",
+        "normanName": "Norman: Kısıtlar",
+        "score": 85,
+        "weight": 0.166,
+        "evaluation": "Tükenen ürünlerin pasifize edilmesi ve minimum/maksimum fiyat filtre girişlerinde sayısal kısıtlama başarılı."
+      },
+      "mapping": {
+        "key": "mapping",
+        "name": "Eşleme (Mapping)",
+        "normanName": "Norman: Eşleme",
+        "score": 80,
+        "weight": 0.166,
+        "evaluation": "Fiyat sıralama filtresinde 'Artan Fiyat' ve 'Azalan Fiyat' ok simgeleri doğru yön eşlemesine sahip."
+      },
+      "consistency": {
+        "key": "consistency",
+        "name": "Tutarlılık (Consistency)",
+        "normanName": "Norman: Tutarlılık",
+        "score": 76,
+        "weight": 0.166,
+        "evaluation": "Farklı satıcılardan gelen ürünlerde kupon ve indirim etiketlerinin font ve arka plan stilleri tutarsızlık gösteriyor."
+      },
+      "affordance": {
+        "key": "affordance",
+        "name": "Sağlarlık (Affordance)",
+        "normanName": "Norman: Sağlarlık",
+        "score": 73,
+        "weight": 0.166,
+        "evaluation": "Ürün kartının tüm alanının tıklanabilir olması iyi bir affordance sunarken, hızlı sepete ekle butonu kartla bütünleşip kaybolabiliyor."
+      }
+    },
+    "findings": [
+      {
+        "id": "norman_ecom_1",
+        "principleKey": "feedback",
+        "principle": "Norman: Geri Bildirim",
+        "title": "Hızlı Sepete Ekle Eyleminde Yerel Görsel Geri Bildirim Eksikliği",
+        "severity": "Yüksek",
+        "selector": "li.productListContent-item:nth-of-type(1) button.add-to-cart-icon",
+        "hypothesis": "Kullanıcı butona bastığında yalnızca ekranın en üstündeki sepet rozetindeki rakam 0'dan 1'e yükselmektedir. Göz odağı ürün kartında olan kullanıcı işlemin başarılı olduğunu hemen kavrayamamakta ve butona ikinci kez basmaktadır.",
+        "recommendation": "Tıklama anında buton üzerinde 2 saniye boyunca 'Sepete Eklendi ✓' yeşil mikro rozeti gösterin ve sepet ikonunu onay tikine dönüştürün.",
+        "confidence": 94,
+        "evidence": {
+          "selector": "li.productListContent-item:nth-of-type(1) button.add-to-cart-icon",
+          "metric": "Yerel kart geri bildirimi eksik, yalnızca uzak header güncelleniyor"
+        }
+      },
+      {
+        "id": "norman_ecom_2",
+        "principleKey": "affordance",
+        "principle": "Norman: Sağlarlık",
+        "title": "Filtreleme Menüsü Başlıklarında Açılır-Kapanır Akordeon Sağlarlık İpuçları Zayıflığı",
+        "severity": "Orta",
+        "selector": "div.filter-header-accordion",
+        "hypothesis": "Filtre başlıklarının yanındaki ok işaretçileri çok soluk gri (#d1d5db) olduğundan, filtrenin daraltılabileceği veya genişletilebileceği algısı zayıftır.",
+        "recommendation": "Ok ikonlarını belirginleştirin ve hover durumunda başlık zeminine hafif bir renk tonu vererek tıklanabilirlik hissini güçlendirin.",
+        "confidence": 88,
+        "evidence": {
+          "selector": "div.filter-header-accordion",
+          "metric": "Soluk ok ikonu, düşük kontrast ve zayıf tıklanabilirlik hissi"
+        }
+      },
+      {
+        "id": "norman_ecom_3",
+        "principleKey": "consistency",
+        "principle": "Norman: Tutarlılık",
+        "title": "Farklı Ürün Kartlarında İndirim ve Kampanya Rozetlerinin Stil Tutarsızlığı",
+        "severity": "Orta",
+        "selector": "div.product-card-badge-container",
+        "hypothesis": "'Süper Fiyat', 'Kupon Fırsatı' ve 'Çok Al Az Öde' rozetleri farklı yazı tipleri, farklı köşe yuvarlatmaları ve kontrastlarla yan yana gelerek sayfanın görsel ritmini bozmakta ve bilişsel karmaşa yaratmaktadır.",
+        "recommendation": "Tasarım sisteminde (Design System) kampanya rozetleri için tek tip tipografi, yükseklik ve ikon hiyerarşisi uygulayın.",
+        "confidence": 86,
+        "evidence": {
+          "selector": "div.product-card-badge-container",
+          "metric": "3 farklı renk ve biçimde rastgele rozet dizilimi"
+        }
+      },
+      {
+        "id": "norman_ecom_4",
+        "principleKey": "constraints",
+        "principle": "Norman: Kısıtlar",
+        "title": "Fiyat Aralığı Filtresinde Mantıksal Kısıtlama Eksikliği",
+        "severity": "Düşük",
+        "selector": "input#price-max-filter",
+        "hypothesis": "Minimum fiyat alanına maksimum fiyattan daha büyük bir değer girildiğinde sistem hata vermek yerine 0 sonuç döndürmektedir.",
+        "recommendation": "Min > Max durumunda otomatik yer değiştirme yapın veya anlık 'Maksimum fiyat minimumdan küçük olamaz' inline uyarısı sunun.",
+        "confidence": 89,
+        "evidence": {
+          "selector": "input#price-max-filter",
+          "metric": "Hatalı sayısal mantık engellenmiyor"
+        }
+      },
+      {
+        "id": "norman_ecom_5",
+        "principleKey": "visibility",
+        "principle": "Norman: Görünürlük",
+        "title": "Medikal Cihaz Garanti ve Onay İbarelerinin Görünürlük Seviyesi",
+        "severity": "Orta",
+        "selector": "div.product-compliance-notice",
+        "hypothesis": "Tansiyon aleti gibi medikal hassasiyete sahip bir cihazda 'Klinik Olarak Onaylı' ve 'Sağlık Bakanlığı Kayıtlı' ibareleri ürün açıklamasının en altında küçük puntolarla kalmaktadır.",
+        "recommendation": "Güvenilirlik etiketini ürün kartının üst kısmında 'Klinik Onaylı Medikal Cihaz' rozeti olarak öne çıkarın.",
+        "confidence": 91,
+        "evidence": {
+          "selector": "div.product-compliance-notice",
+          "metric": "Sayfa tabanında kaybolan kritik güven rozeti"
+        }
+      }
+    ]
+  },
+  "ethicsAndPrivacy": {
+    "privacyAuditPassed": true,
+    "maskedDataPolicyEnforced": true,
+    "detectedSensitivities": []
+  }
+}

@@ -1,0 +1,219 @@
+{
+  "meta": {
+    "tool": "UX Doctor - Chrome Extension (Manifest V3)",
+    "version": "0.2.0",
+    "generatedAt": "2026-10-09T00:48:00.000Z",
+    "targetCategory": "Kamu Hizmeti Sitesi",
+    "targetUrl": "https://giris.turkiye.gov.tr/Giris/",
+    "targetTitle": "e-Devlet Kapısı Kimlik Doğrulama Sistemi",
+    "evaluationEnvironment": "Chrome 128 (Windows 11) - Side Panel Local Verified Engine"
+  },
+  "compositeScore": {
+    "overallScore": 83,
+    "grade": "İyi",
+    "formula": "Genel UX Skoru = (0.50 × WCAG 2.2 AA Deterministik Skor) + (0.50 × Don Norman 6 İlke Skoru)",
+    "deterministicWeight": 0.5,
+    "interpretiveWeight": 0.5,
+    "explanation": "e-Devlet giriş sayfası kurumsal güvenlik ve WCAG 2.2 standartlarında oldukça başarılı bir mimariye sahip olmakla birlikte; sanal klavye butonlarının dokunma alanları ve hata geri bildirimlerinin bilişsel tonunda geliştirmelere açıktır."
+  },
+  "deterministicAudit": {
+    "score": 84,
+    "totalFindings": 4,
+    "severityBreakdown": {
+      "critical": 0,
+      "high": 2,
+      "medium": 1,
+      "low": 1
+    },
+    "categoryScores": {
+      "Kontrast": { "score": 92, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 1, "lowCount": 0 },
+      "Görsel Erişilebilirliği": { "score": 95, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 0 },
+      "Form Etiketleri": { "score": 88, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 0 },
+      "Dokunma Hedefi": { "score": 72, "weight": 0.14, "criticalCount": 0, "highCount": 2, "mediumCount": 0, "lowCount": 0 },
+      "Sayfa Dili": { "score": 100, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 0 },
+      "Başlık Hiyerarşisi": { "score": 84, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 1 },
+      "Erişilebilir İsim": { "score": 90, "weight": 0.14, "criticalCount": 0, "highCount": 0, "mediumCount": 0, "lowCount": 0 }
+    },
+    "findings": [
+      {
+        "id": "det_gov_1",
+        "ruleId": "WCAG 2.5.8",
+        "category": "Dokunma Hedefi",
+        "title": "Sanal Klavye Karakter Butonları Hedef Boyutu (20x22px < 24x24px)",
+        "severity": "Yüksek",
+        "selector": "div.virtual-keyboard button.key-btn",
+        "elementSnippet": "<button class=\"key-btn\" data-char=\"5\">5</button>",
+        "description": "Şifre güvenliği amacıyla sunulan sanal klavye tuşları 20x22px boyutundadır. WCAG 2.2 AA Kriter 2.5.8 gereksinimi olan minimum 24x24px sınırının altındadır. Özellikle dokunmatik ekranlı dizüstü ve kiosk cihazlarda hatalı tuş basımlarına yol açmaktadır.",
+        "recommendation": "Sanal klavye tuşlarının genişlik ve yüksekliğini en az 32x32px seviyesine çıkartın.",
+        "expectedValue": ">= 24x24px",
+        "calculatedValue": "20x22px"
+      },
+      {
+        "id": "det_gov_2",
+        "ruleId": "WCAG 2.5.8",
+        "category": "Dokunma Hedefi",
+        "title": "Şifremi Göster / Gizle Göz İkon Butonu Boyutu (22x22px < 24x24px)",
+        "severity": "Yüksek",
+        "selector": "div.password-wrapper button.toggle-password-visibility",
+        "elementSnippet": "<button class=\"toggle-password-visibility\" aria-label=\"Şifreyi Göster\"><span class=\"eye-icon\"></span></button>",
+        "description": "Giriş kutusunun içindeki göz ikonu 22x22px boyutundadır. Tıklama alanı dar olduğundan kullanıcı şifreyi göreceğine bazen input alanına odaklanmakta ve klavye kapanmaktadır.",
+        "recommendation": "Tıklama alanını en az 32x32px olacak şekilde çevreleyin.",
+        "expectedValue": ">= 24x24px",
+        "calculatedValue": "22x22px"
+      },
+      {
+        "id": "det_gov_3",
+        "ruleId": "WCAG 1.4.3",
+        "category": "Kontrast",
+        "title": "Düşük Kontrast: Güvenlik İpuçları Açıklama Metni (3.42:1)",
+        "severity": "Orta",
+        "selector": "div.security-warning p.warning-body",
+        "elementSnippet": "<p class=\"warning-body\">e-Devlet şifrenizi kimseyle paylaşmayınız.</p>",
+        "description": "Gri zemin üzerindeki soluk metin 3.42:1 kontrast vermektedir. Beklenen asgari oran 4.5:1'dir.",
+        "recommendation": "Yazı rengini koyulaştırarak (#333333) kontrastı en az 5.5:1 yapın.",
+        "expectedValue": ">= 4.5:1",
+        "calculatedValue": "3.42:1"
+      },
+      {
+        "id": "det_gov_4",
+        "ruleId": "WCAG 1.3.1",
+        "category": "Başlık Hiyerarşisi",
+        "title": "Sayfada İki Adet Bağımsız H1 Başlığı Tanımlı",
+        "severity": "Düşük",
+        "selector": "div.login-card h1.card-title",
+        "elementSnippet": "<h1 class=\"card-title\">Giriş Yap</h1>",
+        "description": "Header'da portal adı h1 olarak tanımlanmışken giriş kartında da ayrı bir h1 bulunmaktadır.",
+        "recommendation": "Giriş kartındaki başlığı h2 yapın, hiyerarşik netliği koruyun.",
+        "expectedValue": "1 adet <h1>",
+        "calculatedValue": "2 adet <h1>"
+      }
+    ]
+  },
+  "normanInterpretiveAudit": {
+    "score": 82,
+    "provider": "claude-3-5-sonnet",
+    "hallucinationRate": 0.0,
+    "verifiedCount": 4,
+    "filteredCount": 0,
+    "subScores": {
+      "visibility": {
+        "key": "visibility",
+        "name": "Görünürlük (Visibility)",
+        "normanName": "Norman: Görünürlük",
+        "score": 86,
+        "weight": 0.166,
+        "evaluation": "TCKN ve şifre giriş alanları, 'Şifremi Unuttum' bağlantısı ve alternatif giriş sekmeleri (Mobil İmza, e-İmza, T.C. Kimlik Kartı) oldukça görünür ve net."
+      },
+      "feedback": {
+        "key": "feedback",
+        "name": "Geri Bildirim (Feedback)",
+        "normanName": "Norman: Geri Bildirim",
+        "score": 80,
+        "weight": 0.166,
+        "evaluation": "Caps-lock açık olduğunda dinamik sarı uyarı baloncuğu çıkması mükemmel bir geri bildirim örneğidir. Giriş hatalarında ise hata nedeninin netleştirilmesi gerekir."
+      },
+      "constraints": {
+        "key": "constraints",
+        "name": "Kısıtlar (Constraints)",
+        "normanName": "Norman: Kısıtlar",
+        "score": 92,
+        "weight": 0.166,
+        "evaluation": "TC Kimlik numarası alanına yalnızca 11 hane rakam girilebilmesi, harf girişinin engellenmesi mükemmel bir kısıt (constraint) tasarımıdır."
+      },
+      "mapping": {
+        "key": "mapping",
+        "name": "Eşleme (Mapping)",
+        "normanName": "Norman: Eşleme",
+        "score": 84,
+        "weight": 0.166,
+        "evaluation": "Üst sekmelerdeki kimlik doğrulama yöntemleri (e-Devlet Şifresi -> Mobil İmza -> e-İmza) kullanım yaygınlığına göre mantıklı bir eşlemeyle dizilmiştir."
+      },
+      "consistency": {
+        "key": "consistency",
+        "name": "Tutarlılık (Consistency)",
+        "normanName": "Norman: Tutarlılık",
+        "score": 88,
+        "weight": 0.166,
+        "evaluation": "Devlet kurumları kurumsal kimlik rehberine (T.C. Cumhurbaşkanlığı Dijital Dönüşüm Ofisi) tam uyumlu, tutarlı bir buton ve font ailesi kullanılmaktadır."
+      },
+      "affordance": {
+        "key": "affordance",
+        "name": "Sağlarlık (Affordance)",
+        "normanName": "Norman: Sağlarlık",
+        "score": 78,
+        "weight": 0.166,
+        "evaluation": "Mavi birincil 'Giriş Yap' butonu yüksek affordance sunarken, sanal klavye butonu metin kutusu içine gömüldüğünde buton algısı zayıflamaktadır."
+      }
+    },
+    "findings": [
+      {
+        "id": "norman_gov_1",
+        "principleKey": "feedback",
+        "principle": "Norman: Geri Bildirim",
+        "title": "Giriş Başarısız Olduğunda Hata Geri Bildiriminin Bilişsel Seviyesi",
+        "severity": "Orta",
+        "selector": "div#errorMessageContainer",
+        "hypothesis": "Hatalı şifre girildiğinde güvenlik gerekçesiyle verilen 'Kimlik doğrulama başarısız' uyarısı teknik olarak doğru olsa da, yaşlı veya bilişsel zorluk çeken kullanıcıya TCKN mi yoksa şifrenin mi hatalı olduğunu açıklamamaktadır.",
+        "recommendation": "Güvenlik protokollerini bozmadan, 'Girdiğiniz T.C. Kimlik Numarası veya Şifre hatalıdır. Caps-Lock tuşunuzun kapalı olduğundan emin olunuz' şeklinde rehberlik edici geri bildirim sağlayın.",
+        "confidence": 91,
+        "evidence": {
+          "selector": "div#errorMessageContainer",
+          "metric": "Genel ve soğuk hata mesajı dili"
+        }
+      },
+      {
+        "id": "norman_gov_2",
+        "principleKey": "affordance",
+        "principle": "Norman: Sağlarlık",
+        "title": "Sanal Klavye Butonunun Tıklanabilirlik İpuçları (Signifier) Eksikliği",
+        "severity": "Orta",
+        "selector": "button#btnVirtualKeyboard",
+        "hypothesis": "Sanal klavye ikonu input alanının en sağında gri bir sembol olarak durmaktadır; kullanıcılar bunu tıklanabilir bir araç yerine bir statik güvenlik simgesi zannetmektedir.",
+        "recommendation": "İkonun yanına 'Sanal Klavye Kullan' metni ekleyin veya hover/focus durumunda açık bir tooltip gösterin.",
+        "confidence": 89,
+        "evidence": {
+          "selector": "button#btnVirtualKeyboard",
+          "metric": "Statik rozet gibi duran buton"
+        }
+      },
+      {
+        "id": "norman_gov_3",
+        "principleKey": "visibility",
+        "principle": "Norman: Görünürlük",
+        "title": "Şifre Sıfırlama ve İletişim Hattı (Alo 160) Görünürlüğü",
+        "severity": "Düşük",
+        "selector": "footer.login-footer a.support-line",
+        "hypothesis": "Şifresini unutan ve dijitalden yenileyemeyen vatandaşların başvuracağı Alo 160 çağrı merkezi yönlendirmesi en altta footer içinde soluk yazıyla yer almaktadır.",
+        "recommendation": "'Giriş Yapamıyorum / Şifremi Unuttum' alanının hemen altına 'Yardım: Alo 160' çağrı rozetini yerleştirin.",
+        "confidence": 87,
+        "evidence": {
+          "selector": "footer.login-footer a.support-line",
+          "metric": "Footer alanında kalmış kritik destek numarası"
+        }
+      },
+      {
+        "id": "norman_gov_4",
+        "principleKey": "constraints",
+        "principle": "Norman: Kısıtlar",
+        "title": "TC Kimlik Numarası Algoritmik Doğrulama Kısıtı Başarısı",
+        "severity": "Düşük",
+        "selector": "input#tridField",
+        "hypothesis": "Kullanıcı 11 haneden az veya fazla girememekte, geçersiz ilk hane (0 ile başlama) anında engellenmektedir. Don Norman'ın fiziksel ve mantıksal kısıtlar ilkesine örnek teşkil eden başarılı bir uygulamadır.",
+        "recommendation": "Bu kısıtlama yapısı korunmalı ve ekran okuyucuya anlık '11 hane tamamlandı' sesli teyidi eklenmelidir.",
+        "confidence": 95,
+        "evidence": {
+          "selector": "input#tridField",
+          "metric": "Format kısıtlaması tam uyumlu"
+        }
+      }
+    ]
+  },
+  "ethicsAndPrivacy": {
+    "privacyAuditPassed": true,
+    "maskedDataPolicyEnforced": true,
+    "detectedSensitivities": [
+      "TCKN Giriş Alanı (Maskelendi: [MASKED])",
+      "e-Devlet Parola Alanı (input[type=password]) (Maskelendi: [MASKED])"
+    ]
+  }
+}

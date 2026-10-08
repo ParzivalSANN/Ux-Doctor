@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chrome Browser - MHRS Randevu & UX Doctor Side Panel</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #202124;
+      color: #e8eaed;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* CHROME TARAYICI ÜST ÇUBUĞU */
+    .browser-header {
+      background-color: #292a2d;
+      border-bottom: 1px solid #3c4043;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      user-select: none;
+    }
+    .window-controls {
+      display: flex;
+      gap: 6px;
+    }
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+    }
+    .dot.red { background-color: #ff5f56; }
+    .dot.yellow { background-color: #ffbd2e; }
+    .dot.green { background-color: #27c93f; }
+
+    .nav-buttons {
+      display: flex;
+      gap: 8px;
+      color: #9aa0a6;
+      font-size: 14px;
+    }
+
+    .address-bar {
+      flex: 1;
+      background-color: #202124;
+      border: 1px solid #3c4043;
+      border-radius: 20px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #e8eaed;
+      font-family: monospace;
+    }
+    .address-lock {
+      color: #81c995;
+      font-size: 12px;
+    }
+    .address-url {
+      color: #8ab4f8;
+    }
+    .address-path {
+      color: #9aa0a6;
+    }
+
+    .browser-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .ext-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background-color: #1e1730;
+      border: 1px solid #7ee7c7;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      color: #7ee7c7;
+    }
+
+    /* ANA PENCERE BÖLMESİ */
+    .browser-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    /* SOL: HEDEF SAĞLIK WEB SİTESİ (MHRS) */
+    .web-viewport {
+      flex: 1;
+      background-color: #f4f6f9;
+      color: #333333;
+      overflow-y: auto;
+      padding: 24px 32px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      position: relative;
+    }
+
+    .mhrs-header {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .logo-box {
+      width: 44px;
+      height: 44px;
+      background: linear-gradient(135deg, #e53935, #c62828);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 18px;
+    }
+    .portal-title h1 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1a202c;
+    }
+    .portal-title p {
+      font-size: 11px;
+      color: #718096;
+    }
+
+    .search-card {
+      background-color: #ffffff;
+      border-radius: 16px;
+      padding: 20px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .search-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .search-card-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #2d3748;
+    }
+    /* WCAG 2.5.8 Kural İhlali: 20x20px dokunma hedefi */
+    .tooltip-trigger-btn {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1px solid #cbd5e0;
+      background-color: #edf2f7;
+      color: #4a5568;
+      font-size: 11px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    /* WCAG 3.3.2 Kural İhlali: Etiketsiz input alanı */
+    .search-input-group {
+      display: flex;
+      gap: 10px;
+    }
+    .search-input-group input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      font-size: 13px;
+      outline: none;
+    }
+    .search-input-group button.search-btn {
+      padding: 10px 18px;
+      background-color: #3182ce;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: bold;
+      font-size: 13px;
+      cursor: pointer;
+    }
+
+    /* WCAG 1.4.3 Kural İhlali: Düşük kontrast 2.64:1 (#8c9ba5 üstünde beyaz) */
+    .appointment-hint-text {
+      color: #8c9ba5;
+      font-size: 11px;
+      margin-top: 2px;
+    }
+
+    /* Hızlı Poliklinik Kartları */
+    .clinic-section h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 10px;
+    }
+    .clinic-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    /* Don Norman Sağlarlık İhlali: Buton hissi zayıf kart */
+    .clinic-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .clinic-card:hover {
+      border-color: #cbd5e0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+    .clinic-card strong {
+      font-size: 13px;
+      color: #2d3748;
+    }
+    .clinic-card span {
+      font-size: 11px;
+      color: #718096;
+    }
+
+    /* Takvim Gün Hücreleri (22x22px WCAG 2.5.8 İhlali) */
+    .calendar-card {
+      background: #ffffff;
+      border-radius: 16px;
+      padding: 16px 24px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .calendar-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2d3748;
+      margin-bottom: 10px;
+    }
+    .calendar-days {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .day-cell {
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 1px solid #cbd5e0;
+      background-color: #f7fafc;
+      color: #4a5568;
+      font-size: 10px;
+      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .day-cell.selected {
+      background-color: #3182ce;
+      color: white;
+      border-color: #3182ce;
+    }
+
+    .footer-links {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #a0aec0;
+    }
+    .footer-links a {
+      color: #718096;
+      text-decoration: none;
+    }
+
+    /* SAĞ: UX DOCTOR CHROME SIDE PANEL (420px) */
+    .sidepanel-container {
+      width: 420px;
+      background-color: #1e1730;
+      border-left: 2px solid #392c5c;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.3);
+    }
+    .sidepanel-header {
+      background-color: #261d3d;
+      padding: 8px 14px;
+      border-bottom: 1px solid #392c5c;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      font-weight: bold;
+      color: #c4b3d6;
+    }
+    .sidepanel-header .title {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
+    }
+    .sidepanel-header .title span.dot-online {
+      width: 7px;
+      height: 7px;
+      background-color: #7ee7c7;
+      border-radius: 50%;
+    }
+    .sidepanel-iframe {
+      flex: 1;
+      border: none;
+      width: 100%;
+      height: 100%;
+      background-color: transparent;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- BROWSER HEADER -->
+  <div class="browser-header">
+    <div class="window-controls">
+      <div class="dot red"></div>
+      <div class="dot yellow"></div>
+      <div class="dot green"></div>
+    </div>
+    <div class="nav-buttons">
+      <span>←</span>
+      <span>→</span>
+      <span>↻</span>
+    </div>
+    <div class="address-bar">
+      <span class="address-lock">🔒</span>
+      <span class="address-url">https://mhrs.gov.tr</span><span class="address-path">/vatandas/randevu-ara</span>
+    </div>
+    <div class="browser-actions">
+      <div class="ext-badge">
+        <span>🩺</span>
+        <span>UX Doctor Side Panel</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- BROWSER BODY -->
+  <div class="browser-body">
+    <!-- SOL: HEDEF WEB SAYFASI (MHRS) -->
+    <div class="web-viewport" id="target-web-page">
+      <!-- Logo ve Başlık -->
+      <header class="mhrs-header">
+        <div class="logo-area">
+          <div class="logo-box">T.C.</div>
+          <div class="portal-title">
+            <h1 id="mhrs-main-title">Merkezi Hekim Randevu Sistemi</h1>
+            <p>T.C. Sağlık Bakanlığı Vatandaş Portalı</p>
+          </div>
+        </div>
+        <div style="font-size: 12px; color: #4a5568; font-weight: 600;">
+          Randevu Hattı: <strong>Alo 182</strong>
+        </div>
+      </header>
+
+      <!-- Arama ve Randevu Seçimi Kartı -->
+      <section class="search-card">
+        <div class="search-card-header">
+          <h2>Hızlı Poliklinik ve Hekim Arama</h2>
+          <!-- WCAG 2.5.8 Dokunma Hedefi İhlali: 20x20px -->
+          <button class="tooltip-trigger-btn" id="help-btn" title="Nasıl randevu alınır?">?</button>
+        </div>
+
+        <!-- WCAG 3.3.2 Form Etiketi İhlali: Label'sız input -->
+        <div class="search-input-group">
+          <input
+            type="text"
+            id="quick-clinic-search"
+            placeholder="Branş, hastane veya hekim adı yazınız..."
+          />
+          <button class="search-btn" id="search-appointment-btn">Randevu Ara</button>
+        </div>
+
+        <!-- WCAG 1.4.3 Kontrast İhlali: 2.64:1 (#8c9ba5) -->
+        <p class="appointment-hint-text" id="appointment-hint">
+          * Lütfen randevu saatinizden en az 15 dakika önce ilgili sağlık kuruluşunda hazır bulununuz.
+        </p>
+      </section>
+
+      <!-- Poliklinik Seçimi (Norman Sağlarlık İhlali) -->
+      <section class="clinic-section">
+        <h3>Sık Tercih Edilen Poliklinikler</h3>
+        <div class="clinic-grid" id="clinic-list">
+          <div class="clinic-card" id="clinic-card-1">
+            <strong>Kardiyoloji Polikliniği</strong>
+            <span>Kalp ve Damar Sağlığı (14 Uygun Randevu)</span>
+          </div>
+          <div class="clinic-card" id="clinic-card-2">
+            <strong>Dahiliye (İç Hastalıkları)</strong>
+            <span>Genel Muayene (28 Uygun Randevu)</span>
+          </div>
+          <div class="clinic-card" id="clinic-card-3">
+            <strong>Göz Hastalıkları</strong>
+            <span>Görme ve Katarakt (8 Uygun Randevu)</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Randevu Takvimi (22x22px Gün Butonları İhlali) -->
+      <section class="calendar-card">
+        <h4>Ekim 2026 Randevu Tarihleri</h4>
+        <div class="calendar-days" id="calendar-days-container">
+          <button class="day-cell" id="day-btn-1">10</button>
+          <button class="day-cell" id="day-btn-2">11</button>
+          <button class="day-cell" id="day-btn-3">12</button>
+          <button class="day-cell selected" id="day-btn-4">13</button>
+          <button class="day-cell" id="day-btn-5">14</button>
+          <button class="day-cell" id="day-btn-6">15</button>
+          <button class="day-cell" id="day-btn-7">16</button>
+          <button class="day-cell" id="day-btn-8">17</button>
+        </div>
+      </section>
+
+      <!-- Footer & Acil Durum Gizli Linki (Norman Görünürlük İhlali) -->
+      <footer class="footer-links">
+        <span>© 2026 T.C. Sağlık Bakanlığı - Bilgi İşlem Genel Müdürlüğü</span>
+        <!-- Sayfa altına gizlenmiş acil link -->
+        <a href="#emergency" id="emergency-link">Acil Durum & 112 Yönlendirmesi</a>
+      </footer>
+    </div>
+
+    <!-- SAĞ: UX DOCTOR REACT SIDE PANEL (420px) -->
+    <div class="sidepanel-container">
+      <div class="sidepanel-header">
+        <div class="title">
+          <span class="dot-online"></span>
+          <span>Chrome Side Panel (UX Doctor)</span>
+        </div>
+        <span>v0.2.0</span>
+      </div>
+      <iframe
+        id="sidepanel-frame"
+        class="sidepanel-iframe"
+        src="/index.html"
+      ></iframe>
+    </div>
+  </div>
+
+  <!-- CROSS-FRAME KÖPRÜSÜ: Sayfadaki Elemanı Vurgulama (Highlight) -->
+  <script>
+    window.addEventListener('message', (event) => {
+      const data = event.data;
+      if (!data) return;
+
+      if (data.type === 'HIGHLIGHT_ON_PAGE' && data.selector) {
+        const el = document.querySelector(data.selector);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          const origOutline = el.style.outline;
+          const origShadow = el.style.boxShadow;
+          const origTransition = el.style.transition;
+
+          el.style.transition = 'all 0.3s ease';
+          el.style.outline = '3px solid #7ee7c7';
+          el.style.boxShadow = '0 0 25px rgba(126, 231, 199, 0.9)';
+
+          // Rozet oluştur
+          const rect = el.getBoundingClientRect();
+          let badge = document.getElementById('demo-highlight-badge');
+          if (!badge) {
+            badge = document.createElement('div');
+            badge.id = 'demo-highlight-badge';
+            document.body.appendChild(badge);
+          }
+          badge.textContent = '🩺 UX Doctor: ' + (data.label || 'İncelenen Öğe');
+          badge.style.position = 'fixed';
+          badge.style.top = Math.max(10, rect.top - 36) + 'px';
+          badge.style.left = Math.max(10, rect.left) + 'px';
+          badge.style.backgroundColor = '#1e1730';
+          badge.style.color = '#7ee7c7';
+          badge.style.border = '2px solid #7ee7c7';
+          badge.style.borderRadius = '8px';
+          badge.style.padding = '4px 10px';
+          badge.style.fontSize = '12px';
+          badge.style.fontWeight = 'bold';
+          badge.style.zIndex = '999999';
+          badge.style.display = 'block';
+
+          setTimeout(() => {
+            el.style.outline = origOutline;
+            el.style.boxShadow = origShadow;
+            el.style.transition = origTransition;
+            if (badge) badge.style.display = 'none';
+          }, 3500);
+        }
+      }
+    });
+  </script>
+</body>
+</html>

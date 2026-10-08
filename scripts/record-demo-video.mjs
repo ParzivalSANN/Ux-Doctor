@@ -1,19 +1,24 @@
 /**
- * UX Doctor - Otomatik Demo Videosu Kaydedici (Testsiz / Standalone)
+ * UX Doctor - Bölünmüş Ekran Demo Videosu Kaydedici (Target Site + Side Panel)
  *
  * Playwright-core ve Google Chrome kullanarak:
  *  1. Dahili Vite sunucusunu başlatır.
  *  2. 1280x720 çözünürlükte video kaydını açar.
- *  3. DEMO_REHBERI.md senaryosunu adım adım icra eder:
- *     - Sayfa teşhisini başlatma
- *     - Deterministik vs Norman skorlama karşılaştırması
- *     - 6 Norman alt skorlarının gösterimi
- *     - Skor formülü ve gerekçesi modalı
- *     - Kanıtlı bulgular listesi ve filtreleme
- *     - Sayfada canlı vurgulama (Highlight)
- *     - Gizlilik & API ayarları
- *     - JSON raporu dışa aktarımı
- *  4. Kaydedilen videoyu 'demo/ux_doctor_demo_video.webm' olarak saklar.
+ *  3. http://127.0.0.1:5173/demo-split.html adresini açar:
+ *     - Sol panel: Değerlendirilen hedef web sitesi (T.C. Sağlık Bakanlığı MHRS Randevu Portalı)
+ *     - Sağ panel: UX Doctor Chrome Side Panel (v0.2.0)
+ *  4. Adım adım senaryo (3 - 3.5 dakika):
+ *     - Sol sayfada gezinme ve öğelerin incelenmesi (randevu arama, takvim, poliklinikler)
+ *     - "Tek Tıkla UX Teşhisini Başlat" butonuna tıklanması ve canlı tarama
+ *     - Çift katmanlı skorların (Deterministik 68 vs Norman 62 -> Bileşik 65) sunulması
+ *     - Skor Formülü ve Gerekçesi modalının incelenmesi
+ *     - Don Norman 6 ilke alt skorlarının incelenmesi
+ *     - Bulguların filtrelenmesi (WCAG vs Norman)
+ *     - "Sayfada Göster" butonu ile sol web sitesindeki öğelerin (#help-btn, #quick-clinic-search, #appointment-hint, #emergency-link) canlı vurgulanması
+ *     - Etik, Gizlilik ve Hassas Veri Kalkanı ayarlarının gösterilmesi
+ *     - JSON raporunun dışa aktarılması
+ *     - Isı haritası ve oturum analizi sekmelerinin gösterilmesi
+ *  5. Kaydedilen videoyu 'demo/ux_doctor_demo_video.webm' olarak saklar.
  */
 
 import { chromium } from 'playwright-core';
@@ -67,118 +72,201 @@ async function recordDemo() {
 
   const page = await context.newPage();
 
-  console.log('🌐 [UX Doctor] Sayfaya gidiliyor...');
-  await page.goto('http://127.0.0.1:5173', { waitUntil: 'networkidle' });
-  await sleep(2000);
+  console.log('🌐 [UX Doctor] Bölünmüş ekran sayfasına gidiliyor (/demo-split.html)...');
+  await page.goto('http://127.0.0.1:5173/demo-split.html', { waitUntil: 'networkidle' });
+  await sleep(3000);
 
-  // 1. SAHNE: Giriş ve Başlık
-  console.log('🎬 [Sahne 1] Giriş ve sayfa durumu...');
+  const panel = page.frameLocator('#sidepanel-frame');
+
+  // ========================================================
+  // 1. SAHNE: GİRİŞ & HEDEF WEB SİTESİNİN İNCELENMESİ (0:00 - 0:25)
+  // ========================================================
+  console.log('🎬 [Sahne 1] Hedef web sitesi (MHRS) ve UX Doctor Side Panel tanıtılıyor...');
+  // Sol sayfada fare ile başlık ve arama kartına gezinme
+  await page.mouse.move(300, 120);
+  await sleep(3000);
+
+  // Arama inputu üzerine gel
+  await page.mouse.move(350, 220);
   await sleep(2500);
 
-  // 2. SAHNE: "Tek Tıkla UX Teşhisini Başlat" butonuna tıklama
-  console.log('🎬 [Sahne 2] Teşhis başlatılıyor...');
-  const runAuditBtn = page.locator('button:has-text("Tek Tıkla UX Teşhisini Başlat")');
-  if (await runAuditBtn.isVisible()) {
-    await runAuditBtn.click();
-    await sleep(3500); // Analizin tamamlanmasını bekle
-  }
-
-  // 3. SAHNE: Skorları ve Katmanları İnceleme
-  console.log('🎬 [Sahne 3] Bileşik skor ve katman karşılaştırması inceleniyor...');
+  // Poliklinik kartlarına doğru hafif aşağı kaydır
+  await page.locator('#target-web-page').evaluate((el) => {
+    el.scrollBy({ top: 180, behavior: 'smooth' });
+  });
   await sleep(3000);
 
-  // 4. SAHNE: Skor Formülü ve Gerekçesi Modalı
-  console.log('🎬 [Sahne 4] Skor formülü modalı açılıyor...');
-  const formulaBtn = page.locator('button:has-text("Skor Formülü & Gerekçesi")');
-  if (await formulaBtn.isVisible()) {
-    await formulaBtn.click();
-    await sleep(4000); // Formülü oku
-    // Modalı kapat
-    const modalCloseBtn = page.locator('button:has-text("Anladım")');
-    if (await modalCloseBtn.isVisible()) {
-      await modalCloseBtn.click();
-      await sleep(1500);
-    }
-  }
-
-  // 5. SAHNE: Norman 6 İlke Alt Skorlarına Odaklanma
-  console.log('🎬 [Sahne 5] Don Norman 6 İlke alt skorları inceleniyor...');
-  await page.mouse.wheel(0, 200);
+  // Takvim günlerine doğru kaydır
+  await page.locator('#target-web-page').evaluate((el) => {
+    el.scrollBy({ top: 160, behavior: 'smooth' });
+  });
   await sleep(3000);
 
-  // 6. SAHNE: Bulgular Filtrelemesi
-  console.log('🎬 [Sahne 6] Bulgular listesi ve filtreler test ediliyor...');
-  await page.mouse.wheel(0, 300);
+  // Sayfanın en üstüne geri dön
+  await page.locator('#target-web-page').evaluate((el) => {
+    el.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  await sleep(2500);
+
+  // Sağ panele geçiş
+  await page.mouse.move(1050, 100);
   await sleep(2000);
 
-  // WCAG Filtresi
-  const wcagFilterBtn = page.locator('button:has-text("WCAG")');
-  if (await wcagFilterBtn.isVisible()) {
-    await wcagFilterBtn.click();
-    await sleep(2500);
+  // ========================================================
+  // 2. SAHNE: TEK TIKLA UX TEŞHİSİNİ BAŞLATMA (0:25 - 0:50)
+  // ========================================================
+  console.log('🎬 [Sahne 2] Canlı Çift Katmanlı UX Teşhisi başlatılıyor...');
+  const runAuditBtn = panel.locator('button:has-text("Tek Tıkla UX Teşhisini Başlat")');
+  if (await runAuditBtn.isVisible()) {
+    await runAuditBtn.click();
+    console.log('⏳ [Sahne 2] Sayfa taranıyor: WCAG kuralları ve Don Norman ilkeleri...');
+    await sleep(6000); // Analizin tamamlanmasını bekle
   }
 
-  // Norman Filtresi
-  const normanFilterBtn = page.locator('button:has-text("Norman")');
-  if (await normanFilterBtn.isVisible()) {
-    await normanFilterBtn.click();
-    await sleep(2500);
-  }
+  // ========================================================
+  // 3. SAHNE: BİLEŞİK SKOR VE ÇİFT KATMAN KARŞILAŞTIRMASI (0:50 - 1:25)
+  // ========================================================
+  console.log('🎬 [Sahne 3] Genel UX Skoru (65/100) ve katmanlar inceleniyor...');
+  await page.mouse.move(1050, 200);
+  await sleep(4000);
 
-  // Tümü Filtresi
-  const allFilterBtn = page.locator('button:has-text("Tümü")').first();
-  if (await allFilterBtn.isVisible()) {
-    await allFilterBtn.click();
-    await sleep(2000);
-  }
+  // Skor Formülü modalını aç
+  console.log('🎬 [Sahne 3] Skor Formülü & Gerekçesi modalı açılıyor...');
+  const formulaBtn = panel.locator('button:has-text("Skor Formülü & Gerekçesi")');
+  if (await formulaBtn.isVisible()) {
+    await formulaBtn.click();
+    await sleep(6000); // Formülü ve gerekçeleri oku
 
-  // 7. SAHNE: Sayfada Canlı Vurgulama (Highlight on Click)
-  console.log('🎬 [Sahne 7] Sayfada Göster (Highlight) tetikleniyor...');
-  const highlightBtns = page.locator('button:has-text("Sayfada Göster")');
-  const count = await highlightBtns.count();
-  if (count > 0) {
-    await highlightBtns.first().click();
-    await sleep(3500); // Vurgulama animasyonunu göster
-  }
-
-  // 8. SAHNE: Ayarlar ve Etik Kalkanı
-  console.log('🎬 [Sahne 8] Ayarlar & Etik Güvenlik kalkanı modalı...');
-  const settingsBtn = page.locator('button[title*="Ayarlar"]').first();
-  if (await settingsBtn.isVisible()) {
-    await settingsBtn.click();
-    await sleep(3500);
     // Modalı kapat
-    const closeBtn = page.locator('button:has-text("✕")').first();
-    if (await closeBtn.isVisible()) {
-      await closeBtn.click();
-      await sleep(1500);
+    const modalCloseBtn = panel.locator('button:has-text("Anladım")');
+    if (await modalCloseBtn.isVisible()) {
+      await modalCloseBtn.click();
+      await sleep(2500);
     }
   }
 
-  // 9. SAHNE: JSON Raporu Dışa Aktarma
-  console.log('🎬 [Sahne 9] JSON raporu dışa aktarılıyor...');
-  const exportJsonBtn = page.locator('button:has-text("JSON Raporunu İndir")');
-  if (await exportJsonBtn.isVisible()) {
-    await exportJsonBtn.click();
+  // ========================================================
+  // 4. SAHNE: DON NORMAN 6 İLKE ALT SKORLARI (1:25 - 2:00)
+  // ========================================================
+  console.log('🎬 [Sahne 4] Don Norman 6 İlke alt skorları inceleniyor...');
+  // Yan paneli aşağı kaydırarak Norman alt skorlarını göster
+  await page.mouse.move(1050, 350);
+  for (let i = 0; i < 4; i++) {
+    await page.mouse.wheel(0, 120);
+    await sleep(1500);
+  }
+  await sleep(4000);
+
+  // ========================================================
+  // 5. SAHNE: KANITLI BULGULAR & CANLI SAYFA VURGULAMA (2:00 - 2:50)
+  // ========================================================
+  console.log('🎬 [Sahne 5] Bulgular listesi ve filtreleme test ediliyor...');
+  await page.mouse.wheel(0, 200);
+  await sleep(2500);
+
+  // WCAG Filtresine tıkla
+  console.log('🎬 [Sahne 5] WCAG Filtresi seçiliyor...');
+  const wcagFilterBtn = panel.locator('button:has-text("WCAG")');
+  if (await wcagFilterBtn.isVisible()) {
+    await wcagFilterBtn.click();
+    await sleep(3000);
+  }
+
+  // 1. Bulgu: #help-btn (20x20px Dokunma Hedefi İhlali) vurgula
+  console.log('🎬 [Sahne 5] 1. Bulgu: #help-btn hedef sitede canlı vurgulanıyor...');
+  const highlightBtns = panel.locator('button:has-text("Sayfada Göster")');
+  const count = await highlightBtns.count();
+  if (count > 0) {
+    await highlightBtns.nth(0).click();
+    // Sol taraftaki MHRS sayfasında ? butonunun vurgulanmasını göster
+    await page.mouse.move(450, 180);
+    await sleep(5500);
+  }
+
+  // 2. Bulgu: #quick-clinic-search (Etiketsiz Form İhlali) vurgula
+  if (count > 1) {
+    console.log('🎬 [Sahne 5] 2. Bulgu: #quick-clinic-search hedef sitede canlı vurgulanıyor...');
+    await highlightBtns.nth(1).click();
+    await page.mouse.move(300, 240);
+    await sleep(5500);
+  }
+
+  // 3. Bulgu: #appointment-hint (Düşük Kontrast İhlali) vurgula
+  if (count > 2) {
+    console.log('🎬 [Sahne 5] 3. Bulgu: #appointment-hint hedef sitede canlı vurgulanıyor...');
+    await highlightBtns.nth(2).click();
+    await page.mouse.move(350, 310);
+    await sleep(5500);
+  }
+
+  // Norman Filtresine geç
+  console.log('🎬 [Sahne 5] Norman Filtresi seçiliyor...');
+  const normanFilterBtn = panel.locator('button:has-text("Norman")');
+  if (await normanFilterBtn.isVisible()) {
+    await normanFilterBtn.click();
+    await sleep(3000);
+  }
+
+  // Norman bulgusunu vurgula (Örn. footer acil linki veya poliklinik kartı)
+  const normanHighlightBtns = panel.locator('button:has-text("Sayfada Göster")');
+  const normanCount = await normanHighlightBtns.count();
+  if (normanCount > 0) {
+    console.log('🎬 [Sahne 5] Norman bulgusu hedef sitede canlı vurgulanıyor...');
+    await normanHighlightBtns.first().click();
+    await sleep(5500);
+  }
+
+  // Tümü filtresine geri dön
+  const allFilterBtn = panel.locator('button:has-text("Tümü")').first();
+  if (await allFilterBtn.isVisible()) {
+    await allFilterBtn.click();
     await sleep(2500);
   }
 
-  // 10. SAHNE: Sekmeler Arası Gezinme (Ek Özellikler: Isı Haritası / Oturumlar)
-  console.log('🎬 [Sahne 10] Isı Haritası sekmesi gösteriliyor...');
-  const heatmapTab = page.locator('button:has-text("Isı Haritası")');
+  // ========================================================
+  // 6. SAHNE: ETİK, GİZLİLİK VE HASSAS VERİ KALKANI (2:50 - 3:15)
+  // ========================================================
+  console.log('🎬 [Sahne 6] Etik, Gizlilik ve Güvenlik Ayarları açılıyor...');
+  const settingsBtn = panel.locator('button[title*="Ayarlar"]').first();
+  if (await settingsBtn.isVisible()) {
+    await settingsBtn.click();
+    await sleep(5500); // Gizlilik ve etik bildirimlerini göster
+
+    // Ayarlar modalını kapat
+    const closeBtn = panel.locator('button:has-text("✕")').first();
+    if (await closeBtn.isVisible()) {
+      await closeBtn.click();
+      await sleep(2500);
+    }
+  }
+
+  // ========================================================
+  // 7. SAHNE: JSON RAPORUNU DIŞA AKTARMA & SEKMELER (3:15 - 3:35)
+  // ========================================================
+  console.log('🎬 [Sahne 7] JSON Raporu dışa aktarılıyor...');
+  const exportJsonBtn = panel.locator('button:has-text("JSON Raporunu İndir")');
+  if (await exportJsonBtn.isVisible()) {
+    await exportJsonBtn.click();
+    await sleep(3500);
+  }
+
+  // Isı Haritası sekmesi
+  console.log('🎬 [Sahne 7] Ek Sekme: Isı Haritası gösteriliyor...');
+  const heatmapTab = panel.locator('button:has-text("Isı Haritası")');
   if (await heatmapTab.isVisible()) {
     await heatmapTab.click();
-    await sleep(3000);
+    await sleep(3500);
   }
 
-  console.log('🎬 [Sahne 11] Teşhis paneline geri dönüş...');
-  const diagnosisTab = page.locator('button:has-text("Teşhis")');
+  // Teşhis paneline geri dönüş
+  console.log('🎬 [Sahne 7] Teşhis paneline geri dönülüyor...');
+  const diagnosisTab = panel.locator('button:has-text("Teşhis")');
   if (await diagnosisTab.isVisible()) {
     await diagnosisTab.click();
-    await sleep(3000);
+    await sleep(3500);
   }
 
-  console.log('🛑 [UX Doctor] Kayıt tamamlanıyor...');
+  console.log('🛑 [UX Doctor] Kayıt tamamlanıyor ve video kaydediliyor...');
   await page.close();
   await context.close();
   await browser.close();
@@ -187,7 +275,6 @@ async function recordDemo() {
   // En son üretilen video dosyasını bul ve yeniden adlandır
   const files = fs.readdirSync(demoDir).filter((f) => f.endsWith('.webm'));
   if (files.length > 0) {
-    // En yeni dosyayı al
     files.sort((a, b) => fs.statSync(path.join(demoDir, b)).mtimeMs - fs.statSync(path.join(demoDir, a)).mtimeMs);
     const latestVideo = path.join(demoDir, files[0]);
     const finalVideoPath = path.join(demoDir, 'ux_doctor_demo_video.webm');

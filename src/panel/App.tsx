@@ -176,9 +176,10 @@ export default function App() {
         chrome.runtime.onMessage.removeListener(messageListener);
       };
     } else {
+      const isSplitView = typeof window !== 'undefined' && window.parent && window.parent !== window;
       setActiveTabInfo({
-        title: 'UX Doctor Geliştirme Önizlemesi',
-        url: window.location.href,
+        title: isSplitView ? 'Merkezi Hekim Randevu Sistemi (MHRS)' : 'UX Doctor Geliştirme Önizlemesi',
+        url: isSplitView ? 'https://mhrs.gov.tr/vatandas/randevu-ara' : window.location.href,
       });
     }
   }, []);
@@ -508,6 +509,20 @@ export default function App() {
 
   // Sayfadaki Elemanı Vurgula Butonu
   const handleHighlightElement = async (selector: string, label?: string) => {
+    // 1. İframe içinde (demo / split test görünümünde) ise parent sayfaya postMessage ilet
+    if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
+      window.parent.postMessage(
+        {
+          type: 'HIGHLIGHT_ON_PAGE',
+          selector,
+          label,
+        },
+        '*'
+      );
+      setStatusMessage(`👁️ "${selector}" sayfada vurgulandı.`);
+    }
+
+    // 2. Chrome Extension sekmesinde ise content script'e ilet
     if (typeof chrome !== 'undefined' && chrome.tabs && activeTabInfo.id) {
       try {
         const response = await chrome.tabs.sendMessage(activeTabInfo.id, {
@@ -567,9 +582,23 @@ export default function App() {
         }
       }
 
-      // Yerel Fallback (Dev/Preview veya sekme erişilemezse)
+      // Yerel Fallback (Dev/Preview, Demo Split veya sekme erişilemezse)
       if (!detResult) {
-        privResult = auditPagePrivacy(document);
+        let targetRoot: Document | HTMLElement = document;
+        if (typeof window !== 'undefined' && window.parent && window.parent !== window) {
+          try {
+            const parentTarget = window.parent.document.getElementById('target-web-page');
+            if (parentTarget) {
+              targetRoot = parentTarget;
+              pageContext.title = 'Merkezi Hekim Randevu Sistemi (MHRS)';
+              pageContext.url = 'https://mhrs.gov.tr/vatandas/randevu-ara';
+            }
+          } catch (e) {
+            console.warn('[UX Doctor] Parent dökümana erişilemedi:', e);
+          }
+        }
+
+        privResult = auditPagePrivacy(targetRoot);
         if (privResult.requiresExplicitConsent && !forceConsent) {
           setIsAuditLoading(false);
           setPrivacyResult(privResult);
@@ -577,8 +606,8 @@ export default function App() {
           setStatusMessage('⚠️ Hassas veri uyarısı: Kullanıcı onayı bekleniyor.');
           return;
         }
-        detResult = runDeterministicAudit(document);
-        const extracted = extractInteractiveNodes(document);
+        detResult = runDeterministicAudit(targetRoot);
+        const extracted = extractInteractiveNodes(targetRoot);
         nodesList = extracted.nodes;
       }
 

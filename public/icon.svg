@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" width="128" height="128">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2f244c" />
+      <stop offset="100%" stop-color="#1e1730" />
+    </linearGradient>
+    <linearGradient id="coralGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff9f76" />
+      <stop offset="100%" stop-color="#ff85a1" />
+    </linearGradient>
+  </defs>
+
+  <!-- Arka Plan Chunky Kart -->
+  <rect x="8" y="8" width="112" height="112" rx="30" fill="url(#bgGrad)" stroke="#392c5c" stroke-width="4" />
+
+  <!-- Stetoskop / Nabız / Teşhis İkonu -->
+  <g fill="none" stroke="url(#coralGrad)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Kulaklık Kısmı -->
+    <path d="M44 32 H38 C34 32 30 36 30 40 V54 C30 72 44 84 64 84 C84 84 98 72 98 54 V40 C98 36 94 32 90 32 H84" />
+    <!-- Hortum & Göğüs Parçası -->
+    <path d="M64 84 V100" />
+  </g>
+  <!-- Dinleme Başlığı (Tambur) -->
+  <circle cx="64" cy="100" r="10" fill="#7ee7c7" stroke="#15382b" stroke-width="3" />
+
+  <!-- Canlılık Noktası -->
+  <circle cx="98" cy="30" r="5" fill="#fed668" />
+  <circle cx="30" cy="30" r="5" fill="#fed668" />
+</svg>

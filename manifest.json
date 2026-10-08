@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "UX Doctor",
+  "version": "0.2.0",
+  "description": "Yerel çalışan, tek tıkla sayfa ergonomisi ve erişilebilirlik teşhisi yapan Chrome Side Panel eklentisi.",
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "storage",
+    "sidePanel"
+  ],
+  "action": {
+    "default_title": "UX Doctor Panelini Aç"
+  },
+  "side_panel": {
+    "default_path": "index.html"
+  },
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content-script.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
